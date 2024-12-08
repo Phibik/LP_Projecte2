@@ -18,6 +18,7 @@ void BallTree::postOrdre(std::vector<std::list<Coordinate>>& out) {
 
 Coordinate BallTree::nodeMesProper(Coordinate targetQuery, Coordinate& Q, BallTree* ball) {
     // TODO: TASCA 3
+    return { 2,2 };
 }
 
 

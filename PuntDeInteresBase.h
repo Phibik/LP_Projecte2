@@ -11,7 +11,7 @@ private:
 	std::string m_name;
 	std::string id;
 
-public:		
+public:
 	PuntDeInteresBase();
 	PuntDeInteresBase(Coordinate coord, std::string name);
 
