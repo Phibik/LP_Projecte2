@@ -27,7 +27,7 @@ public:
 };
 
 
-void MapaSolucio::clearCamins()
+inline void MapaSolucio::clearCamins()
 {
 	while (!camins.empty())
 	{
@@ -36,7 +36,7 @@ void MapaSolucio::clearCamins()
 	}
 }
 
-void MapaSolucio::clearPdis()
+inline void MapaSolucio::clearPdis()
 {
 	while (!puntsDeInteres.empty())
 	{
@@ -45,7 +45,7 @@ void MapaSolucio::clearPdis()
 	}
 }
 
-void MapaSolucio::getCamins(std::vector<CamiBase*>& cami)
+inline void MapaSolucio::getCamins(std::vector<CamiBase*>& cami)
 {
 	for (auto it = camins.begin(); it != camins.end(); it++)
 	{
@@ -53,7 +53,7 @@ void MapaSolucio::getCamins(std::vector<CamiBase*>& cami)
 	}
 }
 
-void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis)
+inline void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis)
 {
 	for (auto it = puntsDeInteres.begin(); it != puntsDeInteres.end(); it++)
 	{
@@ -61,7 +61,7 @@ void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis)
 	}
 }
 
-void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
+inline void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 {
 	clearCamins();
 	clearPdis();

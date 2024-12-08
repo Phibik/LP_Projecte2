@@ -24,7 +24,7 @@ public:
     CamiSolucio* clone() { return new CamiSolucio(*this); }
 };
 
-std::vector<Coordinate> CamiSolucio::getCamiCoords()
+inline std::vector<Coordinate> CamiSolucio::getCamiCoords()
 {
     std::vector<Coordinate> caminoCoords;
 

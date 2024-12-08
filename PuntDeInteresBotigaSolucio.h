@@ -24,7 +24,7 @@ public:
 	PuntDeInteresBotigaSolucio* clone() { return new PuntDeInteresBotigaSolucio(*this); }
 };
 
-unsigned int PuntDeInteresBotigaSolucio::getColor()
+inline unsigned int PuntDeInteresBotigaSolucio::getColor()
 {
 	unsigned int color = PuntDeInteresBase::getColor();
 	if (shop == "supermarket")

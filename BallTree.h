@@ -5,8 +5,8 @@
 #include <list>
 #include <algorithm>
 
-class BallTree {
-
+class BallTree
+{
 public:
 	BallTree() {
 		m_left = nullptr;

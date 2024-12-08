@@ -21,7 +21,7 @@ public:
 	PuntDeInteresRestaurantSolucio* clone() { return new PuntDeInteresRestaurantSolucio(*this); }
 };
 
-unsigned int PuntDeInteresRestaurantSolucio::getColor()
+inline unsigned int PuntDeInteresRestaurantSolucio::getColor()
 {
 	unsigned int color = PuntDeInteresBase::getColor();
 
