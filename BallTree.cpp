@@ -78,9 +78,62 @@ void BallTree::postOrdre(std::vector<std::list<Coordinate>>& out) {
     // TODO: TASCA 2
 }
 
-Coordinate BallTree::nodeMesProper(Coordinate targetQuery, Coordinate& Q, BallTree* ball) {
-    // TODO: TASCA 3
-    return { 2,2 };
+Coordinate BallTree::nodeMesProper(Coordinate targetQuery, Coordinate& Q, BallTree* ball)
+{
+    // NO SE QUE ES "Q", potser s'ha de getionar al principi o algo #################################
+
+    // calcular distàncies entre el pivot i targetQuery | Q
+    double d1 = Util::DistanciaHaversine(ball->m_pivot, targetQuery);
+    double d2 = Util::DistanciaHaversine(ball->m_pivot, Q);
+
+    if (d1 - ball->m_radi >= d2)
+        return Q;
+
+    // si ball es una fulla, actualitza Q si és el node camí més proper al punt d'interès (dels punts de ball)
+    if (ball->m_left == nullptr && ball->m_right == nullptr)
+    {
+        for (auto it = m_coordenades.begin(); it != m_coordenades.end(); ++it)
+        {
+            if (Util::DistanciaHaversine(targetQuery, *it) < Util::DistanciaHaversine(targetQuery, Q))
+            {
+                Q.lat = it->lat;
+                Q.lon = it->lon;
+            }
+        }
+        return Q;
+    }
+    else
+    {
+        
+        // distancia pdi respect m_left (da) i m_right (db)
+        double da = 99999999;
+        double db = 99999999; 
+
+        //// comprobar que no siguin nullptr que sino es lia que te cagas
+        if (ball->m_left != nullptr)
+            da = Util::DistanciaHaversine(targetQuery, ball->m_left->m_pivot);
+        if (ball->m_right != nullptr)
+            db = Util::DistanciaHaversine(targetQuery, ball->m_right->m_pivot);
+
+        // si da < db primer cerca per m_left
+        if (da < db)
+        {
+            if (ball->m_left != nullptr)
+                nodeMesProper(targetQuery, Q, ball->m_left);
+            if (ball->m_right != nullptr)
+                nodeMesProper(targetQuery, Q, ball->m_right);
+        }
+        // si da >= db primer cerca per m_right
+        else
+        {
+            if (ball->m_right != nullptr)
+                nodeMesProper(targetQuery, Q, ball->m_right);
+            if (ball->m_left != nullptr)
+                nodeMesProper(targetQuery, Q, ball->m_left);
+        }
+    }
+
+    return Q;
 }
 
 
