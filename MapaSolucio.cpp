@@ -132,6 +132,17 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements) {
 }
 
 CamiBase* MapaSolucio::buscaCamiMesCurt(PuntDeInteresBase* desde, PuntDeInteresBase* a) {
-	// TODO IMPLEMENTACIO DE LA SEGONA PART
+	GrafSolucio graf(this); //implementar constructor a graf solucio de mapabase
+	BallTree bola;
+	bola.construirArbre(graf.getCoordenades()); //implementar getCoords()
+	Coordinate puntInici, puntFinal;
+	bola.nodeMesProper(desde->getCoord(), puntInici, &bola);
+	bola.nodeMesProper(a->getCoord(), puntFinal, &bola);
+	
+	std::vector<Coordinate> coordenadesCami;
+	
+	//IMPLEMENTAR DIJKSRA
+	
+	CamiBase* cami = new CamiSolucio(coordenadesCami);
 	return nullptr;
 }
