@@ -1,10 +1,10 @@
 #include "BallTree.h"
 
-// funciÛ recursiva
+// funci√≥ recursiva
 void BallTree::construirArbre(const std::vector<Coordinate>& coordenades)
 {
-    // condiciÛ de parada
-    // no fa falta perquË tot i que es recursiu el vector de coords es cada vegada mÈs petit
+    // condici√≥ de parada
+    // no fa falta perqu√® tot i que es recursiu el vector de coords es cada vegada m√©s petit
     
     // inicilitzar m_coords y m_pivot
     m_coordenades = coordenades;
@@ -12,40 +12,40 @@ void BallTree::construirArbre(const std::vector<Coordinate>& coordenades)
 
     // calcular totes les distancies respecte el pivot i buscar punt A
     std::vector<double> distancies;
-    int indexA = 0;   // index del punt A (mÈs lluny‡)
+    int indexA = 0;   // index del punt A (m√©s lluny√†)
     for (int i = 0; i < m_coordenades.size(); ++i)
     {
         double dis = Util::DistanciaHaversine(m_pivot, coordenades[i]);
         distancies.push_back(dis);
 
-        // actulitzar index A per ser la dist‡ncia mÈs gran
+        // actulitzar index A per ser la dist√†ncia m√©s gran
         if (dis > distancies[indexA])
             indexA = i;
     }
 
     m_radi = distancies[indexA];
 
-    // AquÌ es para la recrusivitat si no hi ha suficients nodes per fer mÈs BallTrees fills
+    // Aqu√≠ es para la recrusivitat si no hi ha suficients nodes per fer m√©s BallTrees fills
     if (m_coordenades.size() >= 2)
     {
         // calcular totes les distancies respecte A i buscar punt B
         std::vector<double> distanciesA;
         Coordinate coordA = { m_coordenades[indexA].lat, m_coordenades[indexA].lon };
-        int indexB = 0;   // index del punt B (mÈs lluny‡ a A)
+        int indexB = 0;   // index del punt B (m√©s lluny√† a A)
 
         for (int i = 0; i < m_coordenades.size(); ++i)
         {
             double dis = Util::DistanciaHaversine(coordA, coordenades[i]);
             distanciesA.push_back(dis);
 
-            // actulitzar index B per ser la dist‡ncia mÈs gran
+            // actulitzar index B per ser la dist√†ncia m√©s gran
             if (dis > distancies[indexB])
                 indexB = i;
         }
 
         Coordinate coordB = { m_coordenades[indexB].lat, m_coordenades[indexB].lon };
 
-        // Reperir nodes entre els fills A i B que estiguin mÈs propers
+        // Reperir nodes entre els fills A i B que estiguin m√©s propers
         std::vector<Coordinate> coordenadesA, coordenadesB;
         for (int i = 0; i < m_coordenades.size(); ++i)
         {
@@ -68,28 +68,98 @@ void BallTree::construirArbre(const std::vector<Coordinate>& coordenades)
 }
 
 void BallTree::inOrdre(std::vector<std::list<Coordinate>>& out) {
-    // TODO: TASCA 2
+    std::stack<BallTree*> stack; // Pila para almacenar nodos
+    BallTree* current = this;    // Comienza en el nodo actual (ra√≠z)
+
+    while (current != nullptr || !stack.empty()) {
+        // Ve lo m√°s a la izquierda posible
+        while (current != nullptr) {
+            stack.push(current);
+            current = current->m_left; // Mueve al hijo izquierdo
+        }
+
+        // Obt√©n el nodo m√°s a la izquierda de la pila
+        current = stack.top();
+        stack.pop();
+
+        // Procesa el nodo actual
+        std::list<Coordinate> listCoordenades(current->m_coordenades.begin(), current->m_coordenades.end());
+        out.push_back(listCoordenades);
+
+        // Mueve al sub√°rbol derecho
+        current = current->m_right;
+    }
 }
 void BallTree::preOrdre(std::vector<std::list<Coordinate>>& out) {
-    // TODO: TASCA 2
+    std::stack<BallTree*> stack; // Pila para almacenar los nodos
+    stack.push(this);            // Empieza con el nodo ra√≠z
+
+    while (!stack.empty()) {
+        // Obt√©n el nodo superior de la pila
+        BallTree* current = stack.top();
+        stack.pop();
+
+        // Procesa el nodo actual: pasa sus coordenadas a la lista y luego al vector
+        std::list<Coordinate> listCoordenades(current->m_coordenades.begin(), current->m_coordenades.end());
+        out.push_back(listCoordenades);
+
+        // Agrega el hijo derecho a la pila primero (se procesar√° despu√©s del izquierdo)
+        if (current->m_right != nullptr) {
+            stack.push(current->m_right);
+        }
+
+        // Agrega el hijo izquierdo a la pila
+        if (current->m_left != nullptr) {
+            stack.push(current->m_left);
+        }
+    }
 }
 
 void BallTree::postOrdre(std::vector<std::list<Coordinate>>& out) {
-    // TODO: TASCA 2
+    if (this == nullptr) return; // Caso base: √°rbol vac√≠o
+
+    std::stack<BallTree*> stack1; // Primera pila para recorrer el √°rbol
+    std::stack<BallTree*> stack2; // Segunda pila para almacenar nodos en orden post-order
+    stack1.push(this);            // Empieza con el nodo ra√≠z
+
+    // Recorre el √°rbol
+    while (!stack1.empty()) {
+        BallTree* current = stack1.top();
+        stack1.pop();
+        stack2.push(current); // Empuja el nodo actual a la segunda pila
+
+        // Agrega los hijos del nodo actual a la primera pila
+        if (current->m_left != nullptr) {
+            stack1.push(current->m_left);
+        }
+        if (current->m_right != nullptr) {
+            stack1.push(current->m_right);
+        }
+    }
+
+    // Procesa los nodos de la segunda pila
+    while (!stack2.empty()) {
+        BallTree* current = stack2.top();
+        stack2.pop();
+
+        // Convierte las coordenadas del nodo actual a una lista y las agrega a 'out'
+        std::list<Coordinate> listCoordenades(current->m_coordenades.begin(), current->m_coordenades.end());
+        out.push_back(listCoordenades);
+    }
 }
 
 Coordinate BallTree::nodeMesProper(Coordinate targetQuery, Coordinate& Q, BallTree* ball)
 {
     // NO SE QUE ES "Q", potser s'ha de getionar al principi o algo #################################
 
-    // calcular dist‡ncies entre el pivot i targetQuery | Q
+    // calcular dist√†ncies entre el pivot i targetQuery | Q
     double d1 = Util::DistanciaHaversine(ball->m_pivot, targetQuery);
     double d2 = Util::DistanciaHaversine(ball->m_pivot, Q);
 
     if (d1 - ball->m_radi >= d2)
         return Q;
 
-    // si ball es una fulla, actualitza Q si Ès el node camÌ mÈs proper al punt d'interËs (dels punts de ball)
+    // si ball es una fulla, actualitza Q si √©s el node cam√≠ m√©s proper al punt d'inter√®s (dels punts de ball)
     if (ball->m_left == nullptr && ball->m_right == nullptr)
     {
         for (auto it = m_coordenades.begin(); it != m_coordenades.end(); ++it)
