@@ -25,7 +25,7 @@ public:
 
 	void parsejaXmlElements(std::vector<XmlElement>& xmlElements) override;
 
-	CamiBase* buscaCamiMesCurt(PuntDeInteresBase* desde, PuntDeInteresBase* a);
+	CamiBase* buscaCamiMesCurt(PuntDeInteresBase* desde, PuntDeInteresBase* a) override;
 };
 
 
