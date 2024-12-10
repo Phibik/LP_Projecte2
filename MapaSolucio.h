@@ -28,7 +28,6 @@ public:
 	CamiBase* buscaCamiMesCurt(PuntDeInteresBase* desde, PuntDeInteresBase* a) override;
 };
 
-
 inline void MapaSolucio::clearCamins()
 {
 	while (!camins.empty())
