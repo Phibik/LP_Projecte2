@@ -15,56 +15,23 @@ public:
 		m_pivot = Coordinate { 0.0, 0.0 };
         m_root = nullptr;
     }
+	~BallTree() = default;
 
     // Getters
-    BallTree* getArrel() {
-	    return m_root;
-	}
-
-    Coordinate getPivot() {
-		return m_pivot;
-	}
-
-	double getRadi() {
-		return m_radi;
-	}
-
-	BallTree* getDreta() {
-		return m_right;
-	}
-
-	BallTree* getEsquerre() {
-		return m_left;
-	}
-
-	std::vector<Coordinate>& getCoordenades() {
-		return m_coordenades;
-	}
+    BallTree* getArrel() { return m_root; }
+    Coordinate getPivot() {	return m_pivot;	}
+	double getRadi() { return m_radi; }
+	BallTree* getDreta() { return m_right; }
+	BallTree* getEsquerre() { return m_left; }
+	std::vector<Coordinate>& getCoordenades() {	return m_coordenades; }
 
 	// Setters
-    void setArrel(BallTree* root) {
-        m_root = root;
-    }
-
-	void setPivot(Coordinate pivot) {
-		m_pivot = pivot;
-	}
-
-	void setRadius(double radi) {
-		m_radi = radi;
-	}
-
-	void setDreta(BallTree* right) {
-		m_right = right;
-	}
-
-	void setEsquerre(BallTree* left) {
-		m_left = left;
-	}
-
-	void setCoordenades(std::vector<Coordinate>& coordenades) {
-		m_coordenades = coordenades;
-	}
+    void setArrel(BallTree* root) { m_root = root; }
+	void setPivot(Coordinate pivot) { m_pivot = pivot; }
+	void setRadius(double radi) { m_radi = radi; }
+	void setDreta(BallTree* right) { m_right = right; }
+	void setEsquerre(BallTree* left) { m_left = left; }
+	void setCoordenades(std::vector<Coordinate>& coordenades) { m_coordenades = coordenades; }
 
     Coordinate nodeMesProper(Coordinate targetQuery, Coordinate& Q, BallTree* ball);
 
@@ -73,9 +40,6 @@ public:
     void inOrdre(std::vector<std::list<Coordinate>>& out);
     void preOrdre(std::vector<std::list<Coordinate>>& out);
     void postOrdre(std::vector<std::list<Coordinate>>& out);
-
-    // Destructor
-    ~BallTree() = default;
 
 private:
     BallTree* m_root;

@@ -3,7 +3,7 @@
 
 #include "Util.h"
 #include "MapaSolucio.h"
-/*
+
 class GrafSolucio
 {
 public:
@@ -26,4 +26,4 @@ private:
 	int nNodes;
 	int nArestes;
 };
-*/
+
