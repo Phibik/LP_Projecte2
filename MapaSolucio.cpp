@@ -1,4 +1,7 @@
-﻿#include "MapaSolucio.h"
+#include "MapaSolucio.h"
+#include "Util.h"
+#include "BallTree.h"
+#include "GrafSolucio.h"
 
 void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis) {
 	for (auto it = puntsDeInteres.begin(); it != puntsDeInteres.end(); it++)
